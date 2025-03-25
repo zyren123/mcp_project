@@ -69,7 +69,7 @@ class MultiServerClient:
             # Get server configurations
             server_configs = config_data.get("mcpServers", {})
             if not server_configs:
-                print(f"Warning: 'mcpServers' section not found in configuration file")
+                print("Warning: 'mcpServers' section not found in configuration file")
                 return False
                 
         except Exception as e:
@@ -187,6 +187,7 @@ class MultiServerClient:
             # If there is text content, add to final result
             if assistant_content:
                 final_text.append(assistant_content)
+                # messages.extend([{"role": "assistant", "content": assistant_content}])
                 print(f"Model response: {assistant_content}")
             
             # Check if there are tool calls

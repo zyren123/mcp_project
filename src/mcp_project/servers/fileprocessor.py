@@ -1,3 +1,4 @@
+import os
 from mcp.server import FastMCP
 
 mcp = FastMCP("FileProcessor")
@@ -33,7 +34,18 @@ def write_file(file_path: str, content: str) -> str:
     except Exception as e:
         return f"File write failed: {e}"
         
-
+@mcp.tool()
+def list_files(path: str) -> list[str]:
+    """
+    List all files in a directory
+    
+    Parameters:
+        path: Path to the directory
+        
+    Returns:
+        List of files
+    """
+    return os.listdir(path)
 
 if __name__ == "__main__":
     mcp.run(transport="stdio")

@@ -2,7 +2,7 @@
 Single Server Connection Module
 """
 from pathlib import Path
-from typing import Optional, Any, List
+from typing import Optional, Any
 from contextlib import AsyncExitStack
 
 from mcp import ClientSession, StdioServerParameters
