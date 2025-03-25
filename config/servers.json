@@ -1,0 +1,58 @@
+{
+  "mcpServers": {
+    "default": {
+      "command": "python",
+      "args": [
+        "server.py"
+      ],
+      "name": "默认服务器",
+      "description": "主要功能服务器",
+      "enable": true
+    },
+    "add_server": {
+      "command": "python",
+      "args": [
+        "src/mcp_project/servers/calculator.py"
+      ],
+      "name": "计算器服务器",
+      "description": "提供计算功能",
+      "enable": true
+    },
+    "shell_generator": {
+      "command": "python",
+      "args": [
+        "src/mcp_project/servers/shell_generator.py"
+      ],
+      "name": "Shell生成器服务器",
+      "description": "提供Shell命令执行功能",
+      "enable": true
+    },
+    "fileprocessor": {
+      "command": "python",
+      "args": [
+        "src/mcp_project/servers/fileprocessor.py"
+      ],
+      "name": "文件处理器服务器",
+      "description": "提供文件读写功能",
+      "enable": true
+    },
+    "python_excutor": {
+      "command": "python",
+      "args": [
+        "src/mcp_project/servers/python_excutor.py"
+      ],
+      "name": "Python执行器服务器",
+      "description": "提供Python代码执行功能",
+      "enable": true
+    },
+    "test_server": {
+      "command": "python",
+      "args": [
+        "test_server.py"
+      ],
+      "name": "测试服务器",
+      "description": "测试用服务器",
+      "enable": false
+    }
+  }
+} 

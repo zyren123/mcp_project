@@ -1,0 +1,12 @@
+{
+  "openai_api": {
+    "api_key": "",
+    "base_url": "https://api.siliconflow.cn/v1",
+    "model_name": "Qwen/Qwen2.5-7B-Instruct",
+    "parameters": {
+      "temperature": 0.7,
+      "max_tokens": 1000,
+      "tool_choice": "auto"
+    }
+  }
+} 
