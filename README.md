@@ -1,62 +1,80 @@
-# MCP 多服务器客户端项目
+# MCP Multi-Server Client Project
 
-这是一个基于MCP（Model Control Protocol）的多服务器客户端项目，支持同时连接多个服务器并使用OpenAI API进行调用。
+A multi-server client project based on MCP (Model Control Protocol), supporting simultaneous connections to multiple servers and OpenAI API integration.
 
-## 项目结构
+## Project Structure
 
 ```
 mcp_project/
-├── config/                 # 配置文件目录
-│   ├── servers.json        # 服务器配置文件(JSON格式)
-│   └── api_config.json     # API配置文件(JSON格式)
-├── mcp_client/             # 客户端包
-│   ├── __init__.py         # 包初始化文件
-│   ├── core/               # 核心模块
-│   │   ├── __init__.py
-│   │   ├── multi_server_client.py # 多服务器客户端类
-│   │   └── server_connection.py  # 服务器连接类
-│   ├── servers/            # 服务器脚本目录
-│   │   └── add_server.py   # 加法服务器示例
-│   └── utils/              # 工具函数目录
-├── server.py               # 默认示例服务器
-├── run.py                  # 启动脚本
-├── pyproject.toml          # 项目配置
-├── .env                    # 环境变量文件（可选）
-└── README.md               # 项目说明
+├── config/                   # Configuration directory
+│   ├── servers.json          # Server configuration file (JSON format)
+│   └── api_config.json       # API configuration file (JSON format)
+├── src/                      # Source code directory
+│   ├── __init__.py           # Package initialization
+│   └── mcp_project/          # Main project package
+│       ├── __init__.py       # Package initialization
+│       ├── core/             # Core modules
+│       │   ├── __init__.py   
+│       │   ├── multi_server_client.py  # Multi-server client class
+│       │   └── server_connection.py    # Server connection class
+│       ├── servers/          # Server script directory
+│       │   ├── __init__.py
+│       │   ├── calculator.py           # Calculator server example
+│       │   ├── fileprocessor.py        # File processing server
+│       │   ├── python_excutor.py       # Python code execution server
+│       │   └── shell_processor.py      # Shell command processor
+│       └── utils/            # Utility functions
+│           ├── __init__.py
+│           └── load_config.py          # Configuration loading utilities
+├── run.py                    # Startup script
+├── pyproject.toml            # Project configuration
+├── requirements.txt          # Dependencies
+├── .env.example              # Example environment variables (template)
+├── .env                      # Environment variables file (optional)
+└── README.md                 # Project documentation
 ```
 
-## 功能特点
+## Features
 
-1. **多服务器支持**: 根据JSON配置文件同时连接多个MCP服务器
-2. **智能工具调用**: 自动寻找提供特定工具的服务器
-3. **OpenAI API集成**: 使用OpenAI兼容的API接口（例如千问模型）
-4. **交互式对话**: 提供交互式命令行界面
-5. **可配置API设置**: 通过配置文件或环境变量设置API密钥、模型和参数
-6. **环境变量支持**: 支持从.env文件和系统环境变量加载配置
+1. **Multi-Server Support**: Connect to multiple MCP servers simultaneously based on JSON configuration
+2. **Intelligent Tool Routing**: Automatically find servers that provide specific tools
+3. **OpenAI API Integration**: Use OpenAI-compatible API interfaces (e.g., Qwen models)
+4. **Interactive Interface**: Provides an interactive command-line interface
+5. **Configurable API Settings**: Set API keys, models, and parameters via configuration files or environment variables
+6. **Environment Variable Support**: Load configurations from .env files and system environment variables
+7. **Code Execution**: Python code execution with captured output
+8. **File Processing**: Read and write files
+9. **Shell Command Execution**: Execute shell commands
 
-## 安装依赖
+## Installation
 
 ```bash
-# 创建和激活虚拟环境（可选）
+# Clone the repository
+git clone https://github.com/yourusername/mcp_project.git
+cd mcp_project
+
+# Create and activate virtual environment (optional)
 uv venv --python 3.12
-.venv\Scripts\activate
-uv pip install -r reuqirements.txt
+source .venv/bin/activate  # Linux/Mac
+# OR
+.venv\Scripts\activate     # Windows
 
-
+# Install dependencies
+uv pip install -r requirements.txt
 ```
 
-## 配置
+## Configuration
 
-### 环境变量配置
+### Environment Variables
 
-您可以通过以下两种方式设置环境变量：
+You can set environment variables in two ways:
 
-1. **系统环境变量**：在操作系统中设置环境变量
-2. **.env文件**：在项目根目录创建`.env`文件
+1. **System Environment Variables**: Set them in your operating system
+2. **.env File**: Create a `.env` file in the project root directory
 
-支持的环境变量：
+Supported environment variables:
 ```
-OPENAI_API_KEY=您的API密钥
+OPENAI_API_KEY=your-api-key
 OPENAI_BASE_URL=https://api.siliconflow.cn/v1
 OPENAI_MODEL_NAME=Qwen/Qwen2.5-7B-Instruct
 OPENAI_TEMPERATURE=0.7
@@ -65,45 +83,75 @@ OPENAI_MAX_TOKENS=1000
 OPENAI_TOOL_CHOICE=auto
 ```
 
-.env文件示例：
+Example `.env` file:
 ```
 OPENAI_API_KEY=sk-your-api-key-here
 OPENAI_MODEL_NAME=gpt-3.5-turbo
 OPENAI_TEMPERATURE=0.5
 ```
 
-### 服务器配置
+### Server Configuration
 
-编辑`config/servers.json`文件以配置服务器：
+Edit the `config/servers.json` file to configure servers:
 
 ```json
- "mcpServers": {
-    "add_server": {
+{
+  "mcpServers": {
+    "calculator": {
       "command": "python",
       "args": [
-        "mcp_client/servers/add_server.py"
+        "src/mcp_project/servers/calculator.py"
       ],
-      "name": "加法服务器",
-      "description": "提供加法计算功能",
+      "name": "Calculator Server",
+      "description": "Provides calculation functionality",
       "enable": true
-    }}
+    },
+    "python_executor": {
+      "command": "python",
+      "args": [
+        "src/mcp_project/servers/python_excutor.py"
+      ],
+      "name": "Python Executor",
+      "description": "Executes Python code and captures output",
+      "enable": true
+    },
+    "file_processor": {
+      "command": "python",
+      "args": [
+        "src/mcp_project/servers/fileprocessor.py"
+      ],
+      "name": "File Processor",
+      "description": "Provides file reading and writing functionality",
+      "enable": true
+    },
+    "shell_processor": {
+      "command": "python",
+      "args": [
+        "src/mcp_project/servers/shell_processor.py"
+      ],
+      "name": "Shell Processor",
+      "description": "Executes shell commands",
+      "enable": true
+    }
+  }
+}
 ```
 
-每个服务器配置包含以下字段：
-- `command`: 执行命令（如 python 或 node）
-- `args`: 命令参数数组，第一个通常是服务器脚本路径
-- `name`: 显示名称（可选）
-- `description`: 描述（可选）
-- `enable`: 是否启用（可选，默认为true）
+Each server configuration contains the following fields:
+- `command`: Execution command (e.g., python or node)
+- `args`: Command arguments array, usually starting with the server script path
+- `name`: Display name (optional)
+- `description`: Description (optional)
+- `enable`: Whether the server is enabled (optional, defaults to true)
 
-### API配置
+### API Configuration
 
-编辑`config/api_config.json`文件以配置OpenAI API：
+Edit the `config/api_config.json` file to configure the OpenAI API:
 
 ```json
 {
   "openai_api": {
-    "api_key": "您的API密钥",
+    "api_key": "your-api-key",
     "base_url": "https://api.siliconflow.cn/v1",
     "model_name": "Qwen/Qwen2.5-7B-Instruct",
     "parameters": {
@@ -117,15 +165,38 @@ OPENAI_TEMPERATURE=0.5
 }
 ```
 
-**注意**：
-- 如果`api_key`字段为空，系统将使用环境变量`OPENAI_API_KEY`
-- 如果配置文件不存在，系统将使用环境变量或默认值
-- 环境变量的优先级：配置文件 > 环境变量 > 默认值
+**Note**:
+- If the `api_key` field is empty, the system will use the `OPENAI_API_KEY` environment variable
+- If the configuration file doesn't exist, the system will use environment variables or default values
+- Configuration priority: Config file > Environment variables > Default values
 
-## 运行客户端
+## Running the Client
 
 ```bash
-# 使用默认配置启动
+# Start with default configuration
 python run.py
 
+# Specify custom configuration paths
+python run.py --servers path/to/servers.json --api path/to/api_config.json
 ```
+
+The client provides an interactive command line interface. Type your queries and the client will process them using the OpenAI API and MCP servers.
+
+## Available Servers and Tools
+
+### Calculator Server
+- `add`: Calculate the sum of multiple numbers
+- `multiply`: Calculate the product of multiple numbers
+- `compare`: Compare two numbers
+
+### Python Executor
+- `execute_python_code`: Execute Python code and capture stdout output
+- `execute_with_globals`: Execute Python code with a customizable global namespace
+
+### File Processor
+- `read_file`: Read file content
+- `write_file`: Write content to a file
+- `list_files`: List files in a directory
+
+### Shell Processor
+- `execute_shell_command`: Execute shell commands
